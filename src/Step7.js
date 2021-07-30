@@ -2,14 +2,19 @@ import Heading from './heading'
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
 import { Grid, makeStyles } from '@material-ui/core';
+import {Link, useHistory} from "react-router-dom"
+import { useState } from 'react';
+import Back from "./images/back.png"
 const useStyles =makeStyles ((theme) =>({
     start : {
        margin: theme.spacing(40),
        marginRight: theme.spacing(60),
-       textAlign: "center"
+       textAlign: "center",
+       marginTop:"5%"
     },
     btn:{
-        margin: ".375rem",
+        textDecoration: "none",
+        margin: "50%",
         color: "inherit",
         textTransform: "uppercase",
         wordWrap: "break-word",
@@ -27,19 +32,30 @@ const useStyles =makeStyles ((theme) =>({
     },
     textfield : {
        width:"30%",
-       margin: "2%"
-    }
+       margin: "2%",
+       
+    },
+    backBtn: {
+      width: "20px",
+      position: "absolute",
+      left: "20%",
+      top: "20%"
+      // cursor: "pointer";
+  }
 }))
 const Step7 = () => {
     const classes = useStyles()
+    const history = useHistory()
+    const [Emailaddress, setEmailaddress] = useState()
         return ( 
             <div className={classes.start}>
             <Heading heading ={"What's the best email address for us to email you confirmation of your change of address?"} />
+            <img src={Back} className={classes.backBtn} onClick={() => history.push(`/step6`)} ></img>
             <form>
                 <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-            <TextField id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
-                <Grid item xs={12}><Button className={classes.btn} variant="contained" color="primary">NEXT</Button></Grid>
+            <TextField onChange={(e)=>setEmailaddress(e.target.value)} style={{marginLeft:"12%"}} id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
+            <Grid  item xs={12}><Link to="/step8" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                 </Grid>
             </form>
         </div>

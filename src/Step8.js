@@ -3,14 +3,19 @@ import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
 import ValidationTextField from "@material-ui/core/TextField"
 import { Grid, makeStyles } from '@material-ui/core';
+import { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import Back from "./images/back.png"
 const useStyles =makeStyles ((theme) =>({
     start : {
        margin: theme.spacing(40),
        marginRight: theme.spacing(60),
-       textAlign: "center"
+       textAlign: "center",
+       marginTop:"5%"
     },
     btn:{
-        margin: ".375rem",
+        textDecoration: "none",
+        margin: ".375em",
         color: "inherit",
         textTransform: "uppercase",
         wordWrap: "break-word",
@@ -25,21 +30,38 @@ const useStyles =makeStyles ((theme) =>({
         borderRadius:" 5px!important",
         marginTop: "30px",
         color:"white"
-    }
+    },
+    textfield : {
+       width:"30%",
+       margin: "2%",
+       
+    },
+    backBtn: {
+      width: "20px",
+      position: "absolute",
+      left: "20%",
+      top: "20%"
+      // cursor: "pointer";
+  }
 }))
 const Step8 = () => {
     const classes = useStyles()
+    const history = useHistory()
+    const [cardnumber, setcardnumber] = useState()
+    const [cardholder, setcardholder] = useState()
+    const [Address, setAddress] = useState()
     return ( 
         <div className={classes.start}>
             <Heading heading={"Fantastic! That's everything I just need to collect your payment information. By submitting this application you understand that an application processing fee will be charged to the account provided for $39 dollars to complete this application alongside accept our Terms of Service . Please select I Agree to accept these terms or I Decline to decline."} />
+            <img src={Back} className={classes.backBtn}  onClick={() => history.push(`/step7`)}></img>
             <form >
                 <Grid container spacing={1}  alignItems="center" >
 
-                <Grid item xs={12}><TextField variant="outlined" style={{width:"30%"}} id="standard-basic" halfwidth label="Card Number" /></Grid>
+                <Grid item xs={12}><TextField onChange={(e)=>setcardnumber(e.target.value)} style={{marginLeft:"12%"}} variant="outlined" className={classes.textfield} id="standard-basic" halfwidth label="Card Number" /></Grid>
                 
-               <Grid item xs={12} spacing={1}> <ValidationTextField variant="outlined" style={{width:"30%"}} id="standard-basic" label="Card Holder Name " placeholder="Card Holder" /></Grid>
-                <Grid item xs={12}><ValidationTextField variant="outlined"  id="standard-basic" style={{width:"30%"}} label="Billing Address" placeholder="Address" /></Grid>
-               <Grid xs={12} > <Button className={classes.btn} variant="contained" color="primary">I AGREE</Button>
+               <Grid item xs={12} spacing={1}> <ValidationTextField style={{marginLeft:"12%"}} onChange={(e)=>setcardholder(e.target.value)} className={classes.textfield} variant="outlined" id="standard-basic" label="Card Holder Name " placeholder="Card Holder" /></Grid>
+                <Grid item xs={12}><ValidationTextField style={{marginLeft:"12%"}} variant="outlined" onChange={(e)=>setAddress(e.target.value)} className={classes.textfield} id="standard-basic"  label="Billing Address" placeholder="Address" /></Grid>
+               <Grid xs={12} > <Button className={classes.btn} variant="contained" color="primary" style={{marginLeft:"12%"}}>I AGREE</Button>
                 <Button variant="contained" color="primary" className={classes.btn}>I DECLINE</Button></Grid>
                 </Grid>
                 </form>

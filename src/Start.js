@@ -3,16 +3,20 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import Heading from './heading'
 import { Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 
     const useStyles =makeStyles ((theme) =>({
         start : {
            margin: theme.spacing(40),
            marginRight: theme.spacing(60),
-           textAlign: "center"
+           textAlign: "center",
+           marginTop:"5%"
         },
         btn:{
-            margin: ".375rem",
+            textDecoration: "none",
+            margin: "50%",
             color: "inherit",
             textTransform: "uppercase",
             wordWrap: "break-word",
@@ -30,21 +34,24 @@ import { Grid } from "@material-ui/core";
         },
         textfield : {
            width:"30%",
-           margin: "2%"
+           margin: "2%",
+           
         }
     }))
     const Start = () => {
         const classes = useStyles()
+        const [fname , setFirstname]=useState()
+        const [lname ,setLastname] =useState()
         return ( 
             <div className={classes.start}>
                 <Heading heading={"Hey! I'm Madison. I'll help you complete your change of address in seconds. Ready to go?"}/>
                 <form >
                 <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-                    <TextField  className={classes.textfield} id="standard-basic" halfwidth label="Address" />
-                    <TextField className={classes.textfield} id="standard-basic" label="Unit Number" />
+                    <TextField onChange={(e)=>setFirstname(e.target.value)} className={classes.textfield} id="standard-basic" style={{marginLeft:"12%"}} label="First Name" />
+                    <TextField onChange={(e) => setLastname(e.target.value)} className={classes.textfield} id="standard-basic" label="Last Name" />
                     </Grid>
-                    <Grid item xs={12}><Button className={classes.btn} variant="contained" color="primary">NEXT</Button></Grid>
+                    <Grid item xs={12}><Link to ="/step1" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                     </Grid>
                 </form>
 

@@ -25,5 +25,6 @@ function Heading (props){
         <h2 className={classes.h2}>{props.heading}</h2>
      );
 }
+
  
 export default Heading;
