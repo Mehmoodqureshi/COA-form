@@ -5,6 +5,9 @@ import { Grid, makeStyles } from '@material-ui/core';
 import {Link, useHistory} from "react-router-dom"
 import { useState } from 'react';
 import Back from "./images/back.png"
+import Phone from '@material-ui/icons/LocalPhone';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 const useStyles =makeStyles ((theme) =>({
     start : {
        margin: theme.spacing(40),
@@ -43,10 +46,22 @@ const useStyles =makeStyles ((theme) =>({
       // cursor: "pointer";
   }
 }))
-const Step6 = () => {
+const Step6 = (props) => {
+  const {state}=props
     const classes = useStyles()
     const history = useHistory()
     const [Phonenumber, setPhonenumber] = useState()
+    const onChange = (e, fieldName, value) => {
+      let updatedState = { ...state };
+      switch (fieldName) {
+        case "phoneNumber":
+          updatedState[fieldName] = value;
+          break;
+        default:
+          break;
+      }
+      props.onChangeState(updatedState);
+    };
         return ( 
             <div className={classes.start}>
             <Heading heading={"What's the best phone number to reach you at if we have any questions?"} />
@@ -54,7 +69,15 @@ const Step6 = () => {
           <form>
           <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-            <TextField id="standard-basic" onChange={(e)=>setPhonenumber(e.target.value)} style={{marginLeft:"12%"}} className={classes.textfield} label="Phone Number" /></Grid>
+                    <TextField
+                            InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Phone />
+                                </InputAdornment>
+                            ),
+                            }} id="standard-basic" onChange={(e) => onChange(e, "phoneNumber", e.target.value)} value={state.phoneNumber || ""}
+                            style={{marginLeft:"12%"}} className={classes.textfield} label="Phone Number" /></Grid>
             <Grid  item xs={12}><Link to="/step7" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                 </Grid>
          

@@ -5,6 +5,9 @@ import { Grid, makeStyles } from '@material-ui/core';
 import {Link, useHistory} from "react-router-dom"
 import { useState } from 'react';
 import Back from "./images/back.png"
+import Email from '@material-ui/icons/AlternateEmail';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 const useStyles =makeStyles ((theme) =>({
     start : {
        margin: theme.spacing(40),
@@ -43,10 +46,23 @@ const useStyles =makeStyles ((theme) =>({
       // cursor: "pointer";
   }
 }))
-const Step7 = () => {
+const Step7 = (props) => {
+    const {state}=props
     const classes = useStyles()
     const history = useHistory()
     const [Emailaddress, setEmailaddress] = useState()
+    const onChange = (e, fieldName, value) => {
+        let updatedState = { ...state };
+        switch (fieldName) {
+          case "Email":
+            updatedState[fieldName] = value;
+            break;
+          default:
+            break;
+        }
+        props.onChangeState(updatedState);
+      };
+    
         return ( 
             <div className={classes.start}>
             <Heading heading ={"What's the best email address for us to email you confirmation of your change of address?"} />
@@ -54,7 +70,14 @@ const Step7 = () => {
             <form>
                 <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-            <TextField onChange={(e)=>setEmailaddress(e.target.value)} style={{marginLeft:"12%"}} id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
+                    <TextField
+                            InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Email />
+                                </InputAdornment>
+                            ),
+                            }}  onChange={(e) => onChange(e, "Email", e.target.value)} value={state.Email || ""} style={{marginLeft:"12%"}} type="email" id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
             <Grid  item xs={12}><Link to="/step8" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                 </Grid>
             </form>

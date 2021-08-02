@@ -38,9 +38,27 @@ const useStyles =makeStyles ((theme) =>({
     // cursor: "pointer";
 }
 }))
-const Step3 = () => {
+const Step3 = (props) => {
+  const {state}=props
     const classes = useStyles()
     const history = useHistory()
+  
+      const onChange = (e, fieldName, value) => {
+          let updatedState = { ...state };
+          switch (fieldName) {
+            case "moveType":
+              if(value==='temporary'){
+                updatedState.secondDate = value;
+              }
+              updatedState.moveType = value;
+              break;
+            default:
+              break;
+          }
+          props.onChangeState(updatedState);
+        };
+
+  
         return ( 
             <div className={classes.start}>
             <Heading heading={"What best describes you Move?"} />
@@ -49,14 +67,22 @@ const Step3 = () => {
              <Grid container   alignItems="center">
            <Grid item xs={12}>
                <Link to ="/step4" style={{textDecoration:"none"}}>
-                <Button className={classes.btn} variant="contained" color="primary" style={{marginLeft:"12%"}}>
-                  {"TEMPORARY"}
+                <Button className={classes.btn} variant="contained" color="primary" style={{marginLeft:"12%"}} onClick={(e) => {
+                  onChange(e, "moveType", "temporary")
+                  
+                  history.push("/step4");
+                }}>
+                  TEMPORARY
                 </Button>
                 </Link>
 
                <Link to ="/step4" style={{textDecoration:"none"}}>
-                <Button className={classes.btn} variant="contained" color="primary">
-                  {"PERMANENT"}
+                <Button className={classes.btn} variant="contained" color="primary"
+                onClick={(e) => {
+                  onChange(e, "moveType", "permanent")
+                  history.push("/step4");
+                }}>
+                  PERMANENT
                 </Button>
                 </Link>
               </Grid>

@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
 import Heading from "./heading"
 import Back from "./images/back.png"
+import TextField from '@material-ui/core/TextField';
 // import TextField from '@material-ui/core/TextField';
 const useStyles =makeStyles ((theme) =>({
   start : {
@@ -36,9 +37,16 @@ const useStyles =makeStyles ((theme) =>({
     left: "30%",
     top: "20%"
     // cursor: "pointer";
+},
+textfield : {
+   width:"30%",
+   margin: "2%",
+   
 }
 }))
-const Step1 = () => {
+const Step1 = (props) => {
+  const {handleChangeField,state}=props
+  
     const classes = useStyles()
     const history = useHistory()
         return ( 
@@ -49,24 +57,49 @@ const Step1 = () => {
              <Grid container   alignItems="center">
            <Grid item xs={12}>
                <Link to ="/step2" style={{textDecoration:"none"}}>
-                <Button className={classes.btn} variant="contained" color="primary" style={{marginLeft:"12%"}}>
-                  {"INDIVIDUAL"}
+                <Button className={classes.btn} variant="contained" color="primary" style={{marginLeft:"12%"}}   onClick={(e) => {
+                    handleChangeField(e, "move", "individual");
+                    handleChangeField(
+                      e,
+                      "businessName",
+                      ""
+                    );
+                    history.push("/step2");
+                  }}>
+                 INDIVIDUAL
                 </Button>
                 </Link>
                  <Link to ="/step2" style={{textDecoration:"none"}}>
-                <Button className={classes.btn} variant="contained" color="primary">
-                  {"ENTIRE FAMILY"}
+                <Button className={classes.btn} variant="contained" color="primary"   onClick={(e) => {
+                    handleChangeField(e, "move", "Entire Family");
+                    handleChangeField(
+                      e,
+                      "businessName",
+                      ""
+                    );
+                    history.push("/step2");
+                  }}>
+                ENTIRE FAMILY
                 </Button>
                 </Link>
-                {/* <Link to =""> */}
-                <Button className={classes.btn} variant="contained" color="primary">
-                  {"BUSINESS"}
+                <Button className={classes.btn} variant="contained" color="primary"   onClick={(e) => {
+                    handleChangeField(e, "move", "Business");
+                    handleChangeField(
+                      e,
+                      "businessName",
+                      ""
+                    )
+                  }}>
+                  BUSINESS
                 </Button>
-                {/* </Link> */}
+                </Grid>
+                </Grid>
+                <Grid container alignItems="center">
+              {state.move==="Business" && <>
+              <Grid item xs={12}>  <TextField className={classes.textfield} label="Business Name" type="text" value={state.busiessName || ""} placeholder="name of the business" onChange={(e) => handleChangeField(e, "businessName", e.target.value)}/></Grid>
+                <Grid item xs={12}> <Link to ="/step2" style={{textDecoration:"none"}}><Button className={classes.btn} variant="contained" color="primary" >NEXT</Button></Link></Grid>              </>}
               </Grid>
-            
-              </Grid>
-              </form>
+             </form>
         </div>
      );
 }

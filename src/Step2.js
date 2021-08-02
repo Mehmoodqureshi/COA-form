@@ -5,6 +5,8 @@ import Heading from "./heading";
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import Back from "./images/back.png"
+import Location from '@material-ui/icons/LocationOn';
+import InputAdornment from '@material-ui/core/InputAdornment';
 const useStyles =makeStyles ((theme) =>({
     start : {
        margin: theme.spacing(40),
@@ -43,11 +45,23 @@ const useStyles =makeStyles ((theme) =>({
       // cursor: "pointer";
   }
 }))
-const Step2 = () => {
+const Step2 = (props) => {
+    const {state}=props
     const classes = useStyles()
     const history = useHistory()
     const [address ,setAddress] =useState()
     const [unitNumber ,setUnitnumber] =useState()
+    const onChange =(e,fieldName,value)=>{
+        let updatedState = { ...state };
+        switch (fieldName) {
+        case 'unitNumber2':
+          updatedState.unitNumber2 = value
+        break;
+      default:
+        break;
+    }
+    props.onChangeState(updatedState)
+}
     return ( 
         <div className={classes.start}>
             <Heading heading={"Great To meet you a! What's the address you're moving from? "}/>
@@ -55,8 +69,15 @@ const Step2 = () => {
             <form >
             <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-                    <TextField onChange={(e)=>setAddress(e.target.value)} className={classes.textfield} style={{marginLeft:"12%"}} id="standard-basic" halfwidth label="Address" />
-                    <TextField onChange={(e)=>setUnitnumber(e.target.value)}className={classes.textfield} id="standard-basic" label="Unit Number" />
+                    <TextField
+                            InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Location />
+                                </InputAdornment>
+                            ),
+                            }} onChange={(e)=>setAddress(e.target.value)} className={classes.textfield} style={{marginLeft:"12%"}} id="standard-basic" halfwidth label="Address" />
+                    <TextField onChange={(e) => onChange(e, "unitNumber2", e.target.value)} className={classes.textfield} id="standard-basic" label="Unit Number" />
                     </Grid>
                     <Grid item xs={12}><Link to="/step3" style={{textDecoration:"none"}}><Button className={classes.btn} variant="contained" color="primary">NEXT</Button></Link></Grid>
                     </Grid>

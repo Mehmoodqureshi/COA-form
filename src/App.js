@@ -11,8 +11,38 @@
   import Step8 from "./Step8"
   import Navbar from "./Navebar"
   import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React,{ Component } from "react"
+  const defaultState ={
+    userInfo:{},
+    move:"",
+    moveType:"",
+    BusinessName:"",
+    Address:{},
+    unitNumber2:{},
+    unitNumber5:{},
+    phoneNumber:"",
+    Email:"",
+    cardDetails:{},
+    forwardMailStartDate:"",
+    secondDate:false,
+    forwardMailEndDate:""
+  }
+  export default class Form extends Component {
+    state = defaultState;
 
-  function App() {
+  handleChangeField = (e = {}, name, value) => {
+    console.log('here')
+    this.setState(
+      {
+        [name]: value,
+      },console.log(this.state))
+  };
+
+  handleChangeState = (newState) => {
+    this.setState(newState,console.log(this.state));
+  };
+
+  render() {
     return (
       
       <Router> 
@@ -20,31 +50,31 @@
       <div className="App">
         <Switch> 
         <Route exact path="/">
-            <Start />
+            <Start onChangeState={this.handleChangeState.bind(this)} state={this.state} />
         </Route> 
         <Route path="/step1">
-          <Step1 />
+          <Step1 handleChangeField={this.handleChangeField.bind(this)} state={this.state} />
         </Route>
         <Route path="/step2">
-            <Step2 />
+            <Step2 onChangeState={this.handleChangeState.bind(this)} state={this.state}/>
         </Route>
         <Route  path="/step3">
-            <Step3 />
+            <Step3 onChangeState={this.handleChangeState.bind(this)} state={this.state}/>
         </Route>
         <Route  path="/step4">
-            <Step4 />
+            <Step4 onChangeState={this.handleChangeState.bind(this)} state={this.state}/>
         </Route>
         <Route path="/step5">
-            <Step5 />
+            <Step5 onChangeState={this.handleChangeState.bind(this)} state={this.state} />
         </Route>
         <Route  path="/step6">
-            <Step6 />
+            <Step6  onChangeState={this.handleChangeState.bind(this)} state={this.state}/>
         </Route>
         <Route  path="/step7">
-            <Step7 />
+            <Step7 onChangeState={this.handleChangeState.bind(this)} state={this.state} />
         </Route>
         <Route  path="/step8">
-            <Step8 />
+            <Step8 onChangeState={this.handleChangeState.bind(this)} state={this.state}/>
         </Route>
         </Switch>
         </div>
@@ -54,4 +84,4 @@
       
   }
 
-  export default App;
+ }

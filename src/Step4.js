@@ -43,11 +43,29 @@ const useStyles =makeStyles ((theme) =>({
       // cursor: "pointer";
   }
 }))
-    const Step4 = () => {
+    const Step4 = (props) => {
+        const {state}=props
+        const [enableNext, setEnableNext] = useState(false);
         const classes = useStyles()
         const history = useHistory()
         const [datefrom ,setDatefrom] =useState()
         const [dateto ,setDateto]=useState( )
+        const onChange = (e, fieldName, value) => {
+    let updatedState = { ...state }
+    switch (fieldName) {
+      case "forwardMailStartDate":
+        updatedState[fieldName] = value;
+         break;
+      case "stopForwardingMail":
+        updatedState[fieldName] = value;
+        
+        break;
+      default:
+        break;
+    }
+    props.onChangeState(updatedState);
+  };
+        
             return ( 
                 <div className={classes.start}>
                 <Heading heading={"When should we start forwarding mail to your new address?"} />
@@ -55,26 +73,34 @@ const useStyles =makeStyles ((theme) =>({
                 <form>
                     <Grid container spacing={1}  alignItems="center">
                             <Grid  item xs={12}><TextField
-                                onChange={(e)=>setDatefrom(e.target.value)}
                                 id="date"
                                 style={{marginLeft:"12%"}}
-                                label="Date From?*"
+                                // label="Date From?*"
+                                format="MM/dd/yyyy"
                                 type="date"
+                                value={state.forwardMailStartDate || null}
                                 className={classes.textfield}
-                                InputLabelProps={{
-                                shrink: true,
-                                }}
-                            />
-                            <TextField
-                                onChange={(e)=>setDateto(e.target.value)}
-                                id="date"
-                                label="Date To?*"
-                                type="date"
-                                className={classes.textfield}
-                                InputLabelProps={{
-                                shrink: true,
-                                }}
+                                onChange={(e) =>
+                                    onChange(e, "forwardMailStartDate",e.target.value)
+                                }
                             /></Grid>
+                            <Grid item xs={12}>
+                            {state.secondDate && state.moveType === "temporary" && ( <>
+                            <Heading heading={"When do you want to stop the Mails being forwarded to your Temporary Address?"}/>
+
+                            <TextField
+                                id="date"
+                                // label="Date To?*"
+                                type="date"
+                                format="MM/dd/yyyy"
+                                className={classes.textfield}
+                                value={state.forwardMailEndDate || null}
+                                onChange={(e) =>
+                                    onChange(e, "forwardMailStartDate",e.target.value)
+                                }
+                            />
+                            </> ) }
+                            </Grid>
                             <Grid  item xs={12}><Link to="/step5" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                             </Grid>
     </form>

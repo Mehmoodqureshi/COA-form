@@ -5,6 +5,9 @@ import Heading from './heading'
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Icon from '@material-ui/core/Icon';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Person from '@material-ui/icons/Person';
 
 
     const useStyles =makeStyles ((theme) =>({
@@ -38,7 +41,34 @@ import { useState } from "react";
            
         }
     }))
-    const Start = () => {
+    const Start = (props) => {
+        const handleClick =()=>{
+            console.log (fname , lname)
+        }
+        
+        const {onChangeState,state} = props 
+        const onChange = (e, fieldName, value) => {
+            let updatedState = { ...state };
+            switch (fieldName) {
+              case "fname":
+              case "lname":
+                if(fieldName === "fname" || fieldName ==="lname"){
+                  var regex=/^[0-9]+$/;
+                  if(value.length){
+                    if (value[value.length-1].match(regex))
+                {
+                    return
+                }
+                  }
+                
+                }
+                updatedState.userInfo[fieldName] = value;
+                break;
+              default:
+                break;
+            }
+            onChangeState(updatedState);
+          };
         const classes = useStyles()
         const [fname , setFirstname]=useState()
         const [lname ,setLastname] =useState()
@@ -48,10 +78,26 @@ import { useState } from "react";
                 <form >
                 <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
-                    <TextField onChange={(e)=>setFirstname(e.target.value)} className={classes.textfield} id="standard-basic" style={{marginLeft:"12%"}} label="First Name" />
-                    <TextField onChange={(e) => setLastname(e.target.value)} className={classes.textfield} id="standard-basic" label="Last Name" />
+                    <TextField 
+                            InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Person />
+                                </InputAdornment>
+                            ),
+                            }}
+                            onChange={(e) => onChange(e, "fname", e.target.value)} value={state.userInfo.fname || ""} className={classes.textfield} id="standard-basic" style={{marginLeft:"12%"}} label="First Name"  />
+            
+            <TextField
+                            InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Person />
+                                </InputAdornment>
+                            ),
+                            }} onChange={(e) => onChange(e, "lname", e.target.value)} value={state.userInfo.lname || ""} className={classes.textfield} id="standard-basic" label="Last Name" />
                     </Grid>
-                    <Grid item xs={12}><Link to ="/step1" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
+                    <Grid item xs={12}><Link to ="/step1" style={{textDecoration:"none"}}><Button onClick={handleClick} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
                     </Grid>
                 </form>
 
