@@ -3,11 +3,13 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 import Heading from './heading'
 import { Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import Icon from '@material-ui/core/Icon';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Person from '@material-ui/icons/Person';
+import { fieldValidator } from "./validator";
+
 
 
     const useStyles =makeStyles ((theme) =>({
@@ -43,12 +45,13 @@ import Person from '@material-ui/icons/Person';
     }))
     const Start = (props) => {
         const handleClick =()=>{
-            console.log (fname , lname)
+            // console.log (fname , lname)
         }
         
         const {onChangeState,state} = props 
         const onChange = (e, fieldName, value) => {
             let updatedState = { ...state };
+            let errors = { ...errorMsg };
             switch (fieldName) {
               case "fname":
               case "lname":
@@ -63,6 +66,14 @@ import Person from '@material-ui/icons/Person';
                 
                 }
                 updatedState.userInfo[fieldName] = value;
+                setErrorMsg(
+                  fieldValidator(
+                    fieldName,
+                    updatedState.userInfo,
+                    "requiredWithSpace",
+                    errors
+                  ).error
+                );
                 break;
               default:
                 break;
@@ -70,8 +81,34 @@ import Person from '@material-ui/icons/Person';
             onChangeState(updatedState);
           };
         const classes = useStyles()
-        const [fname , setFirstname]=useState()
-        const [lname ,setLastname] =useState()
+        const history = useHistory();
+        const [errorMsg, setErrorMsg] = useState({});
+        
+        
+        const onNext = () => {
+            let errors = { ...errorMsg };
+            let newForm;
+        
+            errors = fieldValidator(
+              "fname",
+              state.userInfo,
+              "requiredWithSpace",
+              errors
+            ).error;
+            newForm = fieldValidator(
+              "lname",
+              state.userInfo,
+              "requiredWithSpace",
+              errors
+            );
+        
+            if (newForm.isValid) {
+                history.push("/step1");
+            } else {
+              setErrorMsg(newForm.error);
+            }
+          };
+        
         return ( 
             <div className={classes.start}>
                 <Heading heading={"Hey! I'm Madison. I'll help you complete your change of address in seconds. Ready to go?"}/>
@@ -79,6 +116,8 @@ import Person from '@material-ui/icons/Person';
                 <Grid container  spacing={1}  alignItems="center" >
                     <Grid item xs={12}>
                     <TextField 
+                            error={!!errorMsg.fname}
+                            helperText={errorMsg.fname}
                             InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -89,6 +128,8 @@ import Person from '@material-ui/icons/Person';
                             onChange={(e) => onChange(e, "fname", e.target.value)} value={state.userInfo.fname || ""} className={classes.textfield} id="standard-basic" style={{marginLeft:"12%"}} label="First Name"  />
             
             <TextField
+                            error={!!errorMsg.lname}
+                            helperText={errorMsg.lname}
                             InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -97,7 +138,11 @@ import Person from '@material-ui/icons/Person';
                             ),
                             }} onChange={(e) => onChange(e, "lname", e.target.value)} value={state.userInfo.lname || ""} className={classes.textfield} id="standard-basic" label="Last Name" />
                     </Grid>
-                    <Grid item xs={12}><Link to ="/step1" style={{textDecoration:"none"}}><Button onClick={handleClick} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
+                      <Grid item xs={12} >
+                         { errorMsg.msg && (
+                <div className="text-danger mb-2">{errorMsg.msg}</div>
+              )}
+                  <Button  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
                     </Grid>
                 </form>
 

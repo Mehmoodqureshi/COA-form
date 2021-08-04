@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Back from "./images/back.png"
 import Email from '@material-ui/icons/AlternateEmail';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { fieldValidator } from './validator';
 
 const useStyles =makeStyles ((theme) =>({
     start : {
@@ -50,19 +51,39 @@ const Step7 = (props) => {
     const {state}=props
     const classes = useStyles()
     const history = useHistory()
+    const [errorMsg, setErrorMsg] = useState({});
     const [Emailaddress, setEmailaddress] = useState()
     const onChange = (e, fieldName, value) => {
-        let updatedState = { ...state };
-        switch (fieldName) {
-          case "Email":
-            updatedState[fieldName] = value;
-            break;
-          default:
-            break;
-        }
-        props.onChangeState(updatedState);
-      };
-    
+      let updatedState = { ...state };
+      let errors = { ...errorMsg };
+      switch (fieldName) {
+        case "Email":
+          updatedState[fieldName] = value;
+          if (errors.email) {
+            setErrorMsg(
+              fieldValidator(fieldName, updatedState, "email", errors).error
+            );
+          }
+          break;
+        default:
+          break;
+      }
+      props.onChangeState(updatedState);
+    };
+  
+    const onNext = () => {
+      let errors = { ...errorMsg };
+      let newForm;
+  
+      newForm = fieldValidator("email", state, "email", errors);
+  
+      if (newForm.isValid) {
+        history.push("/Step8");
+      } else {
+        setErrorMsg(newForm.error);
+      }
+    };
+  
         return ( 
             <div className={classes.start}>
             <Heading heading ={"What's the best email address for us to email you confirmation of your change of address?"} />
@@ -77,8 +98,11 @@ const Step7 = (props) => {
                                 <Email />
                                 </InputAdornment>
                             ),
-                            }}  onChange={(e) => onChange(e, "Email", e.target.value)} value={state.Email || ""} style={{marginLeft:"12%"}} type="email" id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
-            <Grid  item xs={12}><Link to="/step8" style={{textDecoration:"none"}}><Button className={classes.btn}  variant="contained" color="primary">NEXT</Button></Link></Grid>
+                            }} error={!!errorMsg.email}
+                            helperText={errorMsg.email} 
+                             onChange={(e) => onChange(e, "Email", e.target.value)} value={state.Email || ""} style={{marginLeft:"12%"}} type="email" id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
+            <Grid  item xs={12}>
+            <Button onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
                 </Grid>
             </form>
         </div>

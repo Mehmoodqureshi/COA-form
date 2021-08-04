@@ -5,6 +5,8 @@ import { Grid, makeStyles } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import Back from "./images/back.png";
 import { useState } from "react";
+import { fieldValidator } from "./validator";
+
 const useStyles = makeStyles((theme) => ({
   start: {
     margin: theme.spacing(40),
@@ -45,27 +47,67 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Step4 = (props) => {
   const { state } = props;
-  const [enableNext, setEnableNext] = useState(false);
+  const [secondDate, setSecondDate] = useState(false);
   const classes = useStyles();
   const history = useHistory();
-  const [datefrom, setDatefrom] = useState();
-  const [dateto, setDateto] = useState();
+  const [errorMsg, setErrorMsg] = useState({});
   const onChange = (e, fieldName, value) => {
     let updatedState = { ...state };
+  let errors = { ...errorMsg };
     switch (fieldName) {
       case "forwardMailStartDate":
-        updatedState.forwardMailStartDate = value;
-        break;
-      case "forwardMailEndDate":
-        updatedState.forwardMailEndDate = value;
-
-        break;
-      case "secondDate":
         updatedState[fieldName] = value;
+        setSecondDate(true);
+        setErrorMsg(
+          fieldValidator(fieldName, updatedState, "required", errors).error
+        );
+        break;
+      case "stopForwardingMail":
+        updatedState[fieldName] = value;
+        setErrorMsg(
+          fieldValidator(fieldName, updatedState, "required", errors).error
+        );
+        break;
       default:
         break;
     }
     props.onChangeState(updatedState);
+  };
+
+  const onNext = () => {
+    let errors = { ...errorMsg };
+
+    let newForm = fieldValidator(
+      "forwardMailStartDate",
+      state,
+      "required",
+      errors
+    );
+
+    if (state.moveType === "temp") {
+      newForm = fieldValidator(
+        "stopForwardingMail",
+        state,
+        "required",
+        newForm.error
+      );
+      if (state.forwardMailStartDate < state.stopForwardingMail) {
+        props.history.push("/Step5");
+      } else {
+        errors = {
+          ...errors,
+          stopForwardingMail:
+            "This date value not allowed to be before or same the stopping date!",
+        };
+        setErrorMsg(errors);
+      }
+    }
+
+    if (newForm.isValid) {
+      props.history.push("/Step5");
+    } else {
+      setErrorMsg(newForm.error);
+    }
   };
 
   return (
@@ -87,17 +129,19 @@ const Step4 = (props) => {
               // label="Date From?*"
               format="MM/dd/yyyy"
               type="date"
+              error={!!errorMsg.forwardMailStartDate}
+                helperText={errorMsg.forwardMailStartDate}
+                disablePast={true}
               value={state.forwardMailStartDate || null}
               className={classes.textfield}
               onChange={(e) => {
                 onChange(e, "forwardMailStartDate", e.target.value);
-                onChange(e, "secondDate", true);
               }}
             />
           </Grid>
           <Grid item xs={12}>
-            {console.log(state.secondDate, state.moveType)}
-            {state.secondDate && state.moveType === "temporary" && (
+            {console.log(state.secondDate , state.moveType )}
+            {state.secondDate && state.moveType === "temporary" && state.forwardMailStartDate && (
               <>
                 <Heading
                   heading={
@@ -112,6 +156,10 @@ const Step4 = (props) => {
                   format="MM/dd/yyyy"
                   className={classes.textfield}
                   value={state.forwardMailEndDate || null}
+                  error={!!errorMsg.stopForwardingMail}
+                    helperText={errorMsg.stopForwardingMail}
+                    autoOk={true}
+                    disablePast={true}
                   onChange={(e) =>
                     onChange(e, "forwardMailEndDate", e.target.value)
                   }
@@ -120,15 +168,19 @@ const Step4 = (props) => {
             )}
           </Grid>
           <Grid item xs={12}>
-            <Link to="/step5" style={{ textDecoration: "none" }}>
+          {errorMsg > 0 && (
+                <div className="text-danger mb-2">
+                  Please Fill out all the required fields
+                </div>
+              )}
               <Button
                 className={classes.btn}
                 variant="contained"
                 color="primary"
+                onClick={() => onNext()}
               >
                 NEXT
               </Button>
-            </Link>
           </Grid>
         </Grid>
       </form>

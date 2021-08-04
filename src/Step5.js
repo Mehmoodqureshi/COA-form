@@ -1,4 +1,5 @@
 import Heading from "./heading";
+import Map from "./Map"
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Grid, makeStyles } from "@material-ui/core";
@@ -78,7 +79,7 @@ const Step5 = (props) => {
       <form>
         <Grid container spacing={1} alignItems="center">
           <Grid item xs={12}>
-            <TextField
+            {/* <TextField
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -91,9 +92,17 @@ const Step5 = (props) => {
               id="standard-basic"
               halfwidth
               label="Address"
+              
               onChange={(e) => onChange(e, "Address", e.target.value)}
               value={state.Address5 || ""}
-            />
+            /> */}
+            <Map />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <TextField
               onChange={(e) => onChange(e, "unitNumber5", e.target.value)}
               className={classes.textfield}

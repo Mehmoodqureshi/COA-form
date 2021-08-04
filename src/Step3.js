@@ -48,9 +48,9 @@ const Step3 = (props) => {
     let updatedState = { ...state };
     switch (fieldName) {
       case "moveType":
-        // if(value==='temporary'){
-        //   updatedState.secondDate = value;
-        // }
+        if(value==='temporary'){
+          updatedState.secondDate = value;
+        }
         updatedState.moveType = value;
         break;
       default:

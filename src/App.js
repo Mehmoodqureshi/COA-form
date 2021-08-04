@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
 import Start from "./Start";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -28,9 +26,9 @@ const defaultState = {
   forwardMailStartDate: "",
   secondDate: false,
   forwardMailEndDate: "",
-  ltLngNew: "",
-  currentAddressStreet: "",
-  lat_long: "",
+  // ltLngNew: "",
+  // currentAddressStreet: "",
+  // lat_long: "",
 };
 export default class Form extends Component {
   state = defaultState;
@@ -114,3 +112,14 @@ export default class Form extends Component {
     );
   }
 }
+// import Map from "./Map"
+
+// const App = () => {
+//   return ( 
+//     <div>
+//       <Map />
+//     </div>
+//    );
+// }
+ 
+// export default App;

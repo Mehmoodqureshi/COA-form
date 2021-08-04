@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import Heading from "./heading";
 import Back from "./images/back.png";
 import TextField from "@material-ui/core/TextField";
+import React, { useState } from "react";
 // import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   start: {
@@ -46,9 +47,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Step1 = (props) => {
   const { handleChangeField, state } = props;
-
-  const classes = useStyles();
+   const classes = useStyles();
   const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState({});
+
+  const onNext = () => {
+    if (state.businessName.length) {
+      history.push("/step2");
+    } else {
+      setErrorMsg({msg:"Please Provide Business Name"});
+      console.log(errorMsg)
+    }
+  };
+
   return (
     <div className={classes.start}>
       <Heading heading={"What is the move for? "} />
@@ -111,6 +122,8 @@ const Step1 = (props) => {
                   className={classes.textfield}
                   label="Business Name"
                   type="text"
+                  error={!!errorMsg.businessName}
+                    helperText={errorMsg.businessName}
                   value={state.businessName}
                   placeholder="name of the business"
                   onChange={(e) =>
@@ -118,18 +131,12 @@ const Step1 = (props) => {
                   }
                 />
               </Grid>
-              <Grid item xs={12}>
-                {" "}
-                <Link to="/step2" style={{ textDecoration: "none" }}>
-                  <Button
-                    className={classes.btn}
-                    variant="contained"
-                    color="primary"
-                  >
-                    NEXT
-                  </Button>
-                </Link>
-              </Grid>{" "}
+              <Grid  item xs={12} style={{color:"red"}}>
+                {errorMsg.msg && (
+                <div className="text-danger mb-2">{errorMsg.msg}</div>
+              )}
+              <Grid    item xs={12}><Button  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
+              </Grid>
             </>
           )}
         </Grid>
