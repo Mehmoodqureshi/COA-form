@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ValidationTextField from "@material-ui/core/TextField";
 import { Grid, makeStyles } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Back from "./images/back.png";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -50,19 +50,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Step8 = (props) => {
-  const { state,handleChangeField } = props;
+  const { state, handleChangeField } = props;
   const classes = useStyles();
   const history = useHistory();
   const [Address, setAddress] = useState();
   const [errorMsg, setErrorMsg] = useState({});
+  const [btnCheck, setBtnCheck] = useState(false);
   const onChange = (e, name, value) => {
     let updatedState = { ...state };
-      let errors = { ...errorMsg };
+    let errors = { ...errorMsg };
     switch (name) {
+      //
       case "Address":
         updatedState.Address8 = value;
         break;
-        case "cardNumber":
+      case "cardNumber":
         updatedState.cardDetails["cardNumber"] = value;
         setErrorMsg(
           fieldValidator(
@@ -89,6 +91,19 @@ const Step8 = (props) => {
     }
     props.onChangeState(updatedState);
   };
+  useEffect(() => {
+    if (Object.keys(props.state.cardDetails).length >= 2) {
+      if (
+        props.state.cardDetails.cardNumber !== "" &&
+        props.state.Address8 !== "" &&
+        props.state.cardDetails.name !== ""
+      ) {
+        setBtnCheck(true);
+      } else {
+        setBtnCheck(false);
+      }
+    }
+  });
   return (
     <div className={classes.start}>
       <Heading
@@ -120,6 +135,7 @@ const Step8 = (props) => {
               halfwidth
               value={state.cardDetails.cardNumber || ""}
               label="Card Number"
+              inputProps={{ maxLength: 16 }}
               placeholder="Card Number"
             />
           </Grid>
@@ -163,12 +179,17 @@ const Step8 = (props) => {
               placeholder="Address"
             />
           </Grid>
+          {btnCheck && errorMsg && Object.keys(errorMsg).length > 0 && (
+            <div className="text-danger-Container mb-2">
+              Please Fill Correct Details
+            </div>
+          )}
           <Grid xs={12}>
-          
             <Button
               className={classes.btn}
               variant="contained"
               color="primary"
+              onClick={(e) => console.log(errorMsg)}
               style={{ marginLeft: "12%" }}
             >
               I AGREE
