@@ -1,6 +1,6 @@
 import {Map,Marker, GoogleApiWrapper} from 'google-maps-react';
 import React from 'react';
-import PlacesAutocomplete ,{geocodeByAddress,getLatLng} from "react-places-autocomplete"
+import PlacesAutocomplete ,{geocodeByAddress,getLatLng} from "react-google-places-autocomplete"
 import { TextField } from '@material-ui/core';
 import Location from "@material-ui/icons/LocationOn";
 import InputAdornment from "@material-ui/core/InputAdornment";

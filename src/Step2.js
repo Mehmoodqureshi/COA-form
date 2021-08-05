@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   textfield: {
     width: "30%",
     margin: "2%",
+    left:"1%"
   },
   backBtn: {
     width: "20px",
@@ -105,6 +106,7 @@ const Step2 = (props) => {
           <Grid item xs={12}>
             <Link to="/step3" style={{ textDecoration: "none" }}>
               <Button
+              style={{left:"2%"}}
                 className={classes.btn}
                 variant="contained"
                 color="primary"

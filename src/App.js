@@ -21,7 +21,7 @@ const defaultState = {
   unitNumber2: "",
   unitNumber5: "",
   phoneNumber: "",
-  Email: "",
+  email: "",
   cardDetails: {},
   forwardMailStartDate: "",
   secondDate: false,

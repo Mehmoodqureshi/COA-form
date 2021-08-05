@@ -54,10 +54,11 @@ const Step7 = (props) => {
     const [errorMsg, setErrorMsg] = useState({});
     const [Emailaddress, setEmailaddress] = useState()
     const onChange = (e, fieldName, value) => {
+      
       let updatedState = { ...state };
       let errors = { ...errorMsg };
       switch (fieldName) {
-        case "Email":
+        case "email":
           updatedState[fieldName] = value;
           if (errors.email) {
             setErrorMsg(
@@ -71,18 +72,21 @@ const Step7 = (props) => {
       props.onChangeState(updatedState);
     };
   
-    const onNext = () => {
-      let errors = { ...errorMsg };
-      let newForm;
-  
-      newForm = fieldValidator("email", state, "email", errors);
-  
-      if (newForm.isValid) {
-        history.push("/Step8");
-      } else {
-        setErrorMsg(newForm.error);
-      }
-    };
+    
+  const onNext = () => {
+    let errors = { ...errorMsg };
+    let newForm;
+
+    newForm = fieldValidator("email", state, "email", errors);
+ console.log("newForm",newForm)
+    if (newForm.isValid) {
+      console.log("herrrrrrrrrr")
+      history.push("/Step8");
+    } else {
+      setErrorMsg({msg:"Enter a valid Email"});
+    }
+  };
+
   
         return ( 
             <div className={classes.start}>
@@ -100,9 +104,12 @@ const Step7 = (props) => {
                             ),
                             }} error={!!errorMsg.email}
                             helperText={errorMsg.email} 
-                             onChange={(e) => onChange(e, "Email", e.target.value)} value={state.Email || ""} style={{marginLeft:"12%"}} type="email" id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
-            <Grid  item xs={12}>
-            <Button onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
+                             onChange={(e) => onChange(e, "email", e.target.value)} value={state.email || ""} style={{marginLeft:"14%"}} type="email" id="standard-basic" className={classes.textfield} label="Email Address" /></Grid>
+            <Grid  item xs={12} style={{color:"red"}}>
+            {errorMsg && (
+                <div className="text-danger mb-2">{errorMsg.msg}</div>
+              )}
+            <Button style={{left:"2%"}}  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
                 </Grid>
             </form>
         </div>

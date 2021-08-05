@@ -30,11 +30,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: " 5px!important",
     marginTop: "30px",
     color: "white",
+    // left:"-2%"
   },
   backBtn: {
     width: "20px",
     position: "absolute",
-    left: "30%",
+    left: "20%",
     top: "20%",
     // cursor: "pointer";
   },

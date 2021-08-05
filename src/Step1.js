@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     textDecoration: "none",
-    margin: ".375em",
+    // margin: ".375em",
+    margin: "2%",
     color: "inherit",
     textTransform: "uppercase",
     wordWrap: "break-word",
@@ -32,17 +33,19 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: " 5px!important",
     marginTop: "30px",
     color: "white",
+    left:"1%"
   },
   backBtn: {
     width: "20px",
     position: "absolute",
-    left: "30%",
+    left: "20%",
     top: "20%",
     // cursor: "pointer";
   },
   textfield: {
     width: "30%",
-    margin: "2%",
+    marginL: "4%",
+    left:"7%"
   },
 }));
 const Step1 = (props) => {
@@ -73,6 +76,7 @@ const Step1 = (props) => {
           <Grid item xs={12}>
             <Link to="/step2" style={{ textDecoration: "none" }}>
               <Button
+              style={{width:"18%"}}
                 className={classes.btn}
                 variant="contained"
                 color="primary"
@@ -88,6 +92,7 @@ const Step1 = (props) => {
             </Link>
             <Link to="/step2" style={{ textDecoration: "none" }}>
               <Button
+              style={{width:"20%"}}
                 className={classes.btn}
                 variant="contained"
                 color="primary"
@@ -101,6 +106,7 @@ const Step1 = (props) => {
               </Button>
             </Link>
             <Button
+            style={{width:"22%"}}
               className={classes.btn}
               variant="contained"
               color="primary"
@@ -131,11 +137,11 @@ const Step1 = (props) => {
                   }
                 />
               </Grid>
-              <Grid  item xs={12} style={{color:"red"}}>
-                {errorMsg.msg && (
-                <div className="text-danger mb-2">{errorMsg.msg}</div>
+              <Grid  item xs={12} style={{color:"red",marginLeft:"4%"}}>
+                {errorMsg && (
+                <div>{errorMsg.msg}</div>
               )}
-              <Grid    item xs={12}><Button  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
+              <Grid    item xs={12}><Button style={{left:"6%"}}  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
               </Grid>
             </>
           )}

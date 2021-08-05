@@ -2,10 +2,16 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Heading from "./heading";
 import { Grid, makeStyles } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { generatePath, Link, useHistory } from "react-router-dom";
 import Back from "./images/back.png";
 import { useState } from "react";
+import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { fieldValidator } from "./validator";
+import DateFnsUtils from "@date-io/date-fns";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DateRange } from "@material-ui/icons";
+// import { MDBDatePickerV5 } from 'mdbreact';
+
 
 const useStyles = makeStyles((theme) => ({
   start: {
@@ -104,7 +110,7 @@ const Step4 = (props) => {
     }
 
     if (newForm.isValid) {
-      props.history.push("/Step5");
+     history.push("/Step5");
     } else {
       setErrorMsg(newForm.error);
     }
@@ -123,52 +129,74 @@ const Step4 = (props) => {
       <form>
         <Grid container spacing={1} alignItems="center">
           <Grid item xs={12}>
-            <TextField
-              id="date"
-              style={{ marginLeft: "12%" }}
-              // label="Date From?*"
-              format="MM/dd/yyyy"
-              type="date"
-              error={!!errorMsg.forwardMailStartDate}
-                helperText={errorMsg.forwardMailStartDate}
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+                label="Date From?"
+                variant="inline"
+                style={{font:"600 0.9rem/1.3 Lato, Helvetica Neue, Arial, sans-serif"}}
                 disablePast={true}
-              value={state.forwardMailStartDate || null}
-              className={classes.textfield}
-              onChange={(e) => {
-                onChange(e, "forwardMailStartDate", e.target.value);
-              }}
-            />
+                style={{width:"30%",left:"6%"}}
+                format="MM/dd/yyyy"
+                autoOk={true}
+                error={!!errorMsg.forwardMailStartDate}
+                helperText={errorMsg.forwardMailStartDate}
+                value={state.forwardMailStartDate || null}
+                placeholder={`Date from you want to receive Mails`}
+                onChange={(e) =>
+                  onChange(e, "forwardMailStartDate", e.toLocaleDateString())
+                }
+                required
+                InputProps={{
+                  endAdornment: (
+                      <DateRange/>
+                  )
+                }}
+              />
+          </MuiPickersUtilsProvider>
+          {/* <DatePickerComponent placeholder="Date" type="date"></DatePickerComponent> */}
+    
           </Grid>
           <Grid item xs={12}>
-            {console.log(state.secondDate , state.moveType )}
+            {console.log(state.secondDate,state.moveType,state.forwardMailStartDate)}
             {state.secondDate && state.moveType === "temporary" && state.forwardMailStartDate && (
+              
               <>
-                <Heading
+                {/* <Heading
                   heading={
                     "When do you want to stop the Mails being forwarded to your Temporary Address?"
                   }
-                />
-
-                <TextField
-                  id="date"
-                  // label="Date To?*"
-                  type="date"
-                  format="MM/dd/yyyy"
-                  className={classes.textfield}
-                  value={state.forwardMailEndDate || null}
-                  error={!!errorMsg.stopForwardingMail}
-                    helperText={errorMsg.stopForwardingMail}
-                    autoOk={true}
+                /> */}
+                <h4 style={{left:"6%"}}>When do you want to stop the Mails being forwarded to your Temporary Address?</h4>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                
+                <DatePicker
+                    label="Date To?"
+                    variant="inline"
                     disablePast={true}
-                  onChange={(e) =>
-                    onChange(e, "forwardMailEndDate", e.target.value)
-                  }
-                />
+                    format="MM/dd/yyyy"
+                    autoOk={true}
+                    style={{width:"30%",left:"6%"}}
+                    error={!!errorMsg.stopForwardingMail}
+                    helperText={errorMsg.stopForwardingMail}
+                    value={state.stopForwardingMail || null}
+                    placeholder={`Date from you want to stop receiving Mails`}
+                    onChange={(e) =>
+                      onChange(e, "stopForwardingMail", e.toLocaleDateString())
+                    }
+                    required
+                    InputProps={{
+                      endAdornment: (
+                          <DateRange/>
+                      )
+                    }}
+                  />
+                  </MuiPickersUtilsProvider>
+    {/* <DatePickerComponent></DatePickerComponent> */}
               </>
             )}
           </Grid>
           <Grid item xs={12}>
-          {errorMsg > 0 && (
+          {errorMsg.msg && (
                 <div className="text-danger mb-2">
                   Please Fill out all the required fields
                 </div>

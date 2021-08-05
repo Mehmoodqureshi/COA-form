@@ -84,7 +84,7 @@ const Step6 = (props) => {
     if (newForm.isValid) {
       history.push("/step7");
     } else {
-      setErrorMsg(newForm.error);
+      setErrorMsg({msg:"Please provide a phone Number" });
     }
   };
 
@@ -115,9 +115,8 @@ const Step6 = (props) => {
                                 >
                                     {() => (
                                       <TextField
-                                      style={{font:"600 0.9rem/1.3 Lato, Helvetica Neue, Arial, sans-serif"}}
-                                        error={!!errorMsg.phoneNumber}
-                                        helperText={errorMsg.phoneNumber}
+                                      style={{font:"600 0.9rem/1.3 Lato, Helvetica Neue, Arial, sans-serif",left:"7%"}}
+
                                         label="Phone Number"
                                         className={classes.textfield}
                                         placeholder={`Phone Number`}
@@ -127,8 +126,10 @@ const Step6 = (props) => {
                                     )}
                                   </InputMask>
                             </Grid>
-            <Grid  item xs={12}>
-            <Button onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
+            <Grid  item xs={12} style={{color:"red"}}>{errorMsg && (
+                <div className="text-danger mb-2">{errorMsg.msg}</div>
+              )}
+            <Button onClick={() => onNext()} style={{left:"2%"}} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
                 </Grid>
          
           </form>

@@ -10,6 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Person from "@material-ui/icons/PersonAdd";
 import Location from "@material-ui/icons/LocationOn";
 import Dial from "@material-ui/icons/Dialpad";
+import { fieldValidator } from "./validator";
 const useStyles = makeStyles((theme) => ({
   start: {
     margin: theme.spacing(40),
@@ -49,23 +50,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Step8 = (props) => {
-  const { state } = props;
+  const { state,handleChangeField } = props;
   const classes = useStyles();
   const history = useHistory();
-  const [cardnumber, setcardnumber] = useState();
-  const [cardholder, setcardholder] = useState();
   const [Address, setAddress] = useState();
+  const [errorMsg, setErrorMsg] = useState({});
   const onChange = (e, name, value) => {
     let updatedState = { ...state };
+      let errors = { ...errorMsg };
     switch (name) {
       case "Address":
         updatedState.Address8 = value;
         break;
-      case "cardNumber":
+        case "cardNumber":
         updatedState.cardDetails["cardNumber"] = value;
+        setErrorMsg(
+          fieldValidator(
+            "cardNumber",
+            updatedState.cardDetails,
+            "cardNumber",
+            errors
+          ).error
+        );
         break;
       case "name":
         updatedState.cardDetails["name"] = value;
+        setErrorMsg(
+          fieldValidator(
+            "name",
+            updatedState.cardDetails,
+            "requiredWithSpace",
+            errors
+          ).error
+        );
         break;
       default:
         break;
@@ -101,6 +118,7 @@ const Step8 = (props) => {
               className={classes.textfield}
               id="standard-basic"
               halfwidth
+              value={state.cardDetails.cardNumber || ""}
               label="Card Number"
               placeholder="Card Number"
             />
@@ -146,7 +164,7 @@ const Step8 = (props) => {
             />
           </Grid>
           <Grid xs={12}>
-            {" "}
+          
             <Button
               className={classes.btn}
               variant="contained"

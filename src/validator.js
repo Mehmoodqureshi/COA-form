@@ -1,6 +1,7 @@
 import validator from "validator/es";
 
-export const fieldValidator = (fieldName, value, type, error = {}) => {
+export const 
+fieldValidator = (fieldName, value, type, error = {}) => {
   let err = error;
   switch (type) {
     case "checkbox":

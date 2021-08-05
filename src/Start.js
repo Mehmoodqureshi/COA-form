@@ -35,7 +35,8 @@ import { fieldValidator } from "./validator";
             boxShadow: "0 10px 40px -10px #0350b4!important",
             borderRadius:" 5px!important",
             marginTop: "30px",
-            color:"white"
+            color:"white",
+            
         },
         textfield : {
            width:"30%",
@@ -142,7 +143,7 @@ import { fieldValidator } from "./validator";
                          { errorMsg.msg && (
                 <div className="text-danger mb-2">{errorMsg.msg}</div>
               )}
-                  <Button  onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
+                  <Button style={{leftL:"50%"}} onClick={() => onNext()} className={classes.btn}  variant="contained" color="primary">NEXT</Button></Grid>
                     </Grid>
                 </form>
 
