@@ -75,15 +75,18 @@ const Step7 = (props) => {
     let errors = { ...errorMsg };
     let newForm;
 
-    // newForm = fieldValidator("email", state, "email", errors);
+    newForm = fieldValidator("email", state, "email", errors);
     // console.log(newForm, "a");
-    console.log(errorMsg);
-    if (!errorMsg.email) {
-      history.push("/Step8");
-    }
-    // else {
-    // setErrorMsg({ msg: "Enter a valid Email" });
+    // console.log(errorMsg);
+    // if (!errorMsg.email) {
+    //   history.push("/Step8");
     // }
+    if(newForm.isValid){
+      history.push("/Step8")
+    }
+    else {
+    setErrorMsg({ msg: "Enter a valid Email" });
+    }
   };
 
   return (
@@ -122,7 +125,7 @@ const Step7 = (props) => {
           </Grid>
           <Grid item xs={12} style={{ color: "red" }}>
             {console.log(errorMsg, "errorMsg")}
-            {errorMsg && <div className="text-danger mb-2">{errorMsg.msg}</div>}
+            {errorMsg && <div >{errorMsg.msg}</div>}
             <Button
               style={{ left: "2%" }}
               onClick={() => onNext()}

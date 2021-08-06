@@ -61,8 +61,8 @@ const Step6 = (props) => {
     let errors = { ...errorMsg };
     switch (fieldName) {
       case "phoneNumber":
-        updatedState[fieldName] = value;
-        // if (errors.phoneNumber) {
+      
+        updatedState[fieldName] = value
         setErrorMsg(
           fieldValidator(fieldName, updatedState, "phone", errors).error
         );
@@ -78,11 +78,17 @@ const Step6 = (props) => {
     let errors = { ...errorMsg };
     // let newForm;
 
-    // newForm = fieldValidator("phoneNumber", state, "phone", errors);
-    console.log(errors);
-    if (!errors.phoneNumber) {
-      history.push("/step7");
+   let newForm = fieldValidator("phoneNumber", state, "phone", errors);
+    if (newForm.isValid) {
+      history.push("/Step7");
+    } else {
+      setErrorMsg(newForm.error);
     }
+    console.log(errors);
+
+    // if (!errors.phoneNumber) {
+    //   history.push("/step7");
+    // }
   };
 
   return (
@@ -92,7 +98,7 @@ const Step6 = (props) => {
           "What's the best phone number to reach you at if we have any questions?"
         }
       />
-      <img
+       <img
         src={Back}
         className={classes.backBtn}
         onClick={() => history.push(`/step5`)}
@@ -136,7 +142,11 @@ const Step6 = (props) => {
             </InputMask>
           </Grid>
           <Grid item xs={12} style={{ color: "red" }}>
-            {errorMsg && <div className="text-danger mb-2">{errorMsg.msg}</div>}
+          {Object.keys(errorMsg).length > 0 && (
+                <div style={{marginLeft:"8%"}}>
+                  Please Fill out all the required fields
+                </div>
+              )}
             <Button
               onClick={() => onNext()}
               style={{ left: "2%" }}

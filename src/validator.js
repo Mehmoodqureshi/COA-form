@@ -113,9 +113,9 @@ fieldValidator = (fieldName, value, type, error = {}) => {
         let updatedValue = value[fieldName]
           .replace("(", "")
           .replace(")", "")
-          .replace(/-/g, "");
+          .replace(/-/, "");
         if (!/^\d{10}$/.test(updatedValue)) {
-          err[fieldName] = "This is a required field!";
+          err[fieldName] = "Please Provide the Number!";
         } else {
           delete err[fieldName];
         }

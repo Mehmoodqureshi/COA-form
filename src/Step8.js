@@ -103,7 +103,28 @@ const Step8 = (props) => {
         setBtnCheck(false);
       }
     }
-  });
+  },[props.state.cardDetails, props.state.Address8]);
+  const onNext =() =>{
+    let updatedState = { ...state }
+    let errors={...errorMsg}
+    let newForm=fieldValidator(
+      "cardNumber",
+      updatedState.cardDetails,
+      "cardNumber",
+      errors
+    ).error
+    newForm=fieldValidator(
+      "name",
+      updatedState.cardDetails,
+      "name",
+      errors
+    ).error
+    if(newForm.isValid){
+      const data={
+      cardNumber:state.cardDetails.cardNumber,
+      name:state.cardDetails.name
+    }}
+  }
   return (
     <div className={classes.start}>
       <Heading
@@ -179,8 +200,8 @@ const Step8 = (props) => {
               placeholder="Address"
             />
           </Grid>
-          {btnCheck && errorMsg && Object.keys(errorMsg).length > 0 && (
-            <div className="text-danger-Container mb-2">
+          {btnCheck && Object.keys(errorMsg).length > 0 && (
+            <div style={{ marginLeft: "40%",color:"red" }}>
               Please Fill Correct Details
             </div>
           )}
@@ -189,7 +210,7 @@ const Step8 = (props) => {
               className={classes.btn}
               variant="contained"
               color="primary"
-              onClick={(e) => console.log(errorMsg)}
+              onClick={() => onNext()}
               style={{ marginLeft: "12%" }}
             >
               I AGREE

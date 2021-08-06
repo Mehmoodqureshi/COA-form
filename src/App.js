@@ -26,7 +26,7 @@ const defaultState = {
   forwardMailStartDate: "",
   secondDate: false,
   forwardMailEndDate: "",
-  // ltLngNew: "",
+  ltLngNew: "",
   // currentAddressStreet: "",
   // lat_long: "",
 };
