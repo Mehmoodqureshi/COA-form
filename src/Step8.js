@@ -66,31 +66,36 @@ const Step8 = (props) => {
         break;
       case "cardNumber":
         updatedState.cardDetails["cardNumber"] = value;
-        setErrorMsg(
-          fieldValidator(
-            "cardNumber",
-            updatedState.cardDetails,
-            "cardNumber",
-            errors
-          ).error
-        );
+        if (errors.cardNumber) {
+          setErrorMsg(
+            fieldValidator(
+              "cardNumber",
+              updatedState.cardDetails,
+              "cardNumber",
+              errors
+            ).error
+          );
+        }
         break;
       case "name":
         updatedState.cardDetails["name"] = value;
-        setErrorMsg(
-          fieldValidator(
-            "name",
-            updatedState.cardDetails,
-            "requiredWithSpace",
-            errors
-          ).error
-        );
+        if (errors.name) {
+          setErrorMsg(
+            fieldValidator(
+              "name",
+              updatedState.cardDetails,
+              "requiredWithSpace",
+              errors
+            ).error
+          );
+        }
         break;
       default:
         break;
     }
     props.onChangeState(updatedState);
   };
+  console.log(errorMsg);
   useEffect(() => {
     if (Object.keys(props.state.cardDetails).length >= 2) {
       if (
@@ -103,28 +108,34 @@ const Step8 = (props) => {
         setBtnCheck(false);
       }
     }
-  },[props.state.cardDetails, props.state.Address8]);
-  const onNext =() =>{
-    let updatedState = { ...state }
-    let errors={...errorMsg}
-    let newForm=fieldValidator(
+  }, [props.state.cardDetails, props.state.Address8]);
+  const onNext = () => {
+    let updatedState = { ...state };
+    let errors = { ...errorMsg };
+    console.log("on next ma hy", errors);
+    let newForm = fieldValidator(
       "cardNumber",
       updatedState.cardDetails,
       "cardNumber",
       errors
-    ).error
-    newForm=fieldValidator(
+    ).error;
+
+    newForm = fieldValidator(
       "name",
       updatedState.cardDetails,
       "name",
       errors
-    ).error
-    if(newForm.isValid){
-      const data={
-      cardNumber:state.cardDetails.cardNumber,
-      name:state.cardDetails.name
-    }}
-  }
+    ).error;
+    if (newForm.isValid) {
+      const data = {
+        cardNumber: state.cardDetails.cardNumber,
+        name: state.cardDetails.name,
+      };
+    } else {
+      setErrorMsg(newForm.error);
+      console.log(errors);
+    }
+  };
   return (
     <div className={classes.start}>
       <Heading
@@ -201,7 +212,7 @@ const Step8 = (props) => {
             />
           </Grid>
           {btnCheck && Object.keys(errorMsg).length > 0 && (
-            <div style={{ marginLeft: "40%",color:"red" }}>
+            <div style={{ marginLeft: "40%", color: "red" }}>
               Please Fill Correct Details
             </div>
           )}

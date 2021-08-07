@@ -61,11 +61,12 @@ const Step6 = (props) => {
     let errors = { ...errorMsg };
     switch (fieldName) {
       case "phoneNumber":
-      
-        updatedState[fieldName] = value
-        setErrorMsg(
-          fieldValidator(fieldName, updatedState, "phone", errors).error
-        );
+        updatedState[fieldName] = value;
+        if (errors.phnNumber) {
+          setErrorMsg(
+            fieldValidator(fieldName, updatedState, "phone", errors).error
+          );
+        }
         // }
         break;
       default:
@@ -78,7 +79,7 @@ const Step6 = (props) => {
     let errors = { ...errorMsg };
     // let newForm;
 
-   let newForm = fieldValidator("phoneNumber", state, "phone", errors);
+    let newForm = fieldValidator("phoneNumber", state, "phone", errors);
     if (newForm.isValid) {
       history.push("/Step7");
     } else {
@@ -98,7 +99,7 @@ const Step6 = (props) => {
           "What's the best phone number to reach you at if we have any questions?"
         }
       />
-       <img
+      <img
         src={Back}
         className={classes.backBtn}
         onClick={() => history.push(`/step5`)}
@@ -116,7 +117,7 @@ const Step6 = (props) => {
                             }} id="standard-basic" onChange={(e) => onChange(e, "phoneNumber", e.target.value)} value={state.phoneNumber || ""}
                             style={{marginLeft:"12%"}} className={classes.textfield} label="Phone Number" /></Grid> */}
           <Grid item xs={12}>
-            <InputMask
+            {/* <InputMask
               mask="(999)999-9999"
               id={`phoneNumber`}
               value={state.phoneNumber || ""}
@@ -124,17 +125,37 @@ const Step6 = (props) => {
               onBlur={(e) => onChange(e, "phoneNumber", e.target.value)}
               maskChar="_"
             >
+              {() => ( */}
+            {/* <TextField
+              style={{
+                font: "600 0.9rem/1.3 Lato, Helvetica Neue, Arial, sans-serif",
+                left: "7%",
+              }}
+              error={errorMsg.phoneNumber}
+              helperText={errorMsg.phoneNumber}
+              label="Phone Number"
+              className={classes.textfield}
+              placeholder={`Phone Number`}
+              value={state.phoneNumber || ""}
+              onChange={(e) => onChange(e, "phoneNumber", e.target.value)}
+              onFocus
+              required
+              type="tel"
+            >
+              <InputMask mask="(999)999-9999" maskChar="" />
+            </TextField> */}
+            {/* )}
+            </InputMask> */}
+            <InputMask
+              mask="(999)999-9999"
+              value={state.phoneNumber || ""}
+              onChange={(e) => onChange(e, "phoneNumber", e.target.value)}
+            >
               {() => (
                 <TextField
-                  style={{
-                    font: "600 0.9rem/1.3 Lato, Helvetica Neue, Arial, sans-serif",
-                    left: "7%",
-                  }}
                   error={errorMsg.phoneNumber}
                   helperText={errorMsg.phoneNumber}
-                  label="Phone Number"
                   className={classes.textfield}
-                  placeholder={`Phone Number`}
                   required
                   type="tel"
                 />
@@ -142,11 +163,11 @@ const Step6 = (props) => {
             </InputMask>
           </Grid>
           <Grid item xs={12} style={{ color: "red" }}>
-          {Object.keys(errorMsg).length > 0 && (
-                <div style={{marginLeft:"8%"}}>
-                  Please Fill out all the required fields
-                </div>
-              )}
+            {Object.keys(errorMsg).length > 0 && (
+              <div style={{ marginLeft: "8%" }}>
+                Please Fill out all the required fields
+              </div>
+            )}
             <Button
               onClick={() => onNext()}
               style={{ left: "2%" }}
